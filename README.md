@@ -18,7 +18,7 @@ parameters = {
     "min_data_per_leaf": 10,
 }
 
-# First two columns of X_train and X_test are the base model predictions
+# First "predictor_count" columns of X_train and X_test are the base model predictions
 
 model = lgbm_ensemble_convex(**parameters)
 model.fit(X_train, y_train)
@@ -32,10 +32,11 @@ For any weight constrained model from the MLP Ensemble:
 ```python
 from mlp_ensemble import MLP_Ensembler
 
-# Last two columns of X_train and X_test are the base model predictions
+# Last "predictor_count" columns of X_train and X_test are the base model predictions
+# "predictions" is a list, in the format of [preds_1, preds_2, ..] where preds_{i} are 1-D numpy arrays corresponding to base model predictions
 
 ens = MLP_Ensembler(num_features=(X_train.iloc[:,:-2].shape[1]),
-                    predictions=[preds_1, preds_2], # preds_1 and preds_2 are 1-D numpy arrays corresponding to base model predictions
+                    predictions=predictions,
                     constraint="convex",
                     hidden_layer_sizes=(param_set[1],)
                     hidden_activations=nn.ReLU,
