@@ -9,6 +9,48 @@ from scipy.special import softmax
 
 
 
+"""
+
+LightGBM Ensembler: given `predictions` of base regressors, trained to find
+a mapping for a good set of weights to combine them. Various
+constraints can be imposed on the blending vector.
+
+        predictor_count=2,
+        learning_rate: float = 0.001,
+        max_depth: int = 5,
+        num_leaves: int = 15,
+        n_estimators: int = 100,
+        min_data_per_leaf: int = 10,
+        verbose: int = -1,  # 0
+
+Parameters
+----------
+
+predictor_count : int
+    Number of base regressors.
+
+learning_rate : float, default=3e-3
+    Parameter for the regularization of LightGBM trees.
+
+max_depth : int, default=5
+    Maximum depth of any tree in the LightGBM architecture.
+
+n_estimators : int, default=100
+    Number of trees to fit to the data.
+    
+min_data_per_leaf : int, default=10
+    Minimum number of samples that should be in a leaf
+
+
+Notes
+-----
+- First "predicor_count" columns of "X" for both training and test should be the base predictions
+- There are total of 4 different implmentations found below, based on the weight constraint.
+
+"""
+
+
+
 class lgbm_ens_convex():
     """
     Custom implementation of LightGBM Ensemble Convex
