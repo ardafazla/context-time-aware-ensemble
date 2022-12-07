@@ -8,9 +8,10 @@ import lightgbm as lgb
 from scipy.special import softmax
 
 
+
 class lgbm_ens_convex():
     """
-    Custom implementation of LightGBMEnsemble
+    Custom implementation of LightGBM Ensemble Convex
     Weight condition: Convex, meaning all weights are between [0,1] and sum up to 1
     """
 
@@ -142,7 +143,7 @@ class lgbm_ens_convex():
 
 class lgbm_ens_affine():
     """
-    Custom implementation of LightGBMEnsemble
+    Custom implementation of LightGBMEnsemble Affine
     Weight condition: Affine, meaning all weights sum up to 1
     """
 
@@ -288,11 +289,15 @@ class lgbm_ens_affine():
         plt.tight_layout()
         
 
-class LGBMEnsemble_v3():
-    """
-    Custom implementation of LightGBMEnsemble.
-    """
 
+class lgbm_ensemble_affine_project():
+    """
+    Custom implementation of LightGBMEnsemble Affine Projection
+    Addition: another version of the affine constraint solution, 
+    based on orthogonal projection of the unconstrained weights to affine subspace
+    Weight condition: Affine, meaning all weights sum up to 1
+    """
+    
     def __init__(
         self,
         predictor_count=2,
@@ -439,10 +444,11 @@ class LGBMEnsemble_v3():
         plt.tight_layout()
         
         
+        
 # No Constraint without Base Preds
 class lgbm_ens_nc():
     """
-    Custom implementation of LightGBMEnsemble
+    Custom implementation of LightGBMEnsemble No Constraint
     Weight condition: No constraint on weights
     """
 
