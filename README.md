@@ -38,7 +38,7 @@ from mlp_ensemble import MLP_Ensembler
 ens = MLP_Ensembler(num_features=(X_train.iloc[:,:-2].shape[1]),
                     predictions=predictions,
                     constraint="convex",
-                    hidden_layer_sizes=(param_set[1],)
+                    hidden_layer_sizes=(16,)
                     hidden_activations=nn.ReLU,
                     num_epochs=500,
                     learning_rate=0.05,
