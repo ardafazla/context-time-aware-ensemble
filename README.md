@@ -1,5 +1,5 @@
-# context-aware-ensemble
-Source code for our paper [Context-Aware Ensemble Learning for Time Series](https://arxiv.org/abs/2211.16884), submitted to the journal IEEE Transactions on Neural Networks and Learning Systems.
+# context-time-aware-ensemble
+Source code for our paper [Adaptive Temporal Ensemble Learning with Context Sensitivity for Time Series](https://arxiv.org/abs/2211.16884), submitted to the journal IEEE Transactions on Artificial Intelligence.
 
 ### Sample Usage
 (Additional comments and instructions can be found in the corresponding model code)
