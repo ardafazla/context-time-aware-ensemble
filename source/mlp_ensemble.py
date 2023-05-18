@@ -4,6 +4,64 @@ import torch.nn as nn
 import torch.optim as optim
 from sklearn.metrics import mean_squared_error as mse
 
+"""
+MLP Ensembler: given `predictions` of base regressors, trained to find
+a mapping for a good set of weights to combine them. Various
+constraints can be imposed on the blending vector.
+
+Parameters
+----------
+num_features : int
+    Number of features the model will be trained with.
+
+predictions : list of pd.Series or list of np.ndarray
+    Base regressors' predictions for the training data.
+
+constraint : str, default="unconstrained"
+    One of "unconstrained", "affine", "convex". If "unconstrained",
+    last layer of the network is activated with identity. If "affine",
+    still identity; but the weight vector is divided by its sum so it
+    sums to 1 prior to blending. If "convex", softmax activation is
+    used, i.e., weights sum up to 1 *and* they are nonnegative.
+
+hidden_layer_sizes : tuple of int, default=(64, 16)
+    Determines both the number of hidden layers and the number of units
+    per layer. Excludes the input and output layers.
+
+hidden_activations : torch.nn.<ACT> or list of torch.nn.<ACT>,
+                     default=torch.nn.ReLU
+    Nonlinearities used in the hidden layers. Should be given
+    uninitialized. If a list, length must match that of
+    `hidden_layer_sizes`; otherwise, repeated for each layer.
+
+num_epochs : int, default=10_000
+    Number of epochs to train.
+
+learning_rate : float, default=3e-3
+    Passed to `optimizer`.
+
+batch_size : int, default=128
+    Number of samples per batch.
+
+lambda_1 : float, default=1e-2
+    L1 regularization parameter.
+
+lambda_2 : float, default=1e-2
+    L2 regularization parameter.
+
+loss_criterion : torch.nn.<CRI>, default=torch.nn.MSELoss
+    Loss function. Should be uninitialized.
+
+optimizer : torch.optim.<OPT>, default=torch.optim.Adam
+    Optimizer.
+
+Notes
+-----
+- Number of inputs are determined from `num_features`
+- Number of outputs are determined from `len(predictions)`
+- Network's output are weights and `predictions` are weighted with 
+these and then fed to the `loss_criterion` agains the ground truths.
+"""
 
 class MLP_Ensembler(nn.Module):
     def __init__(self, num_features, predictions, constraint="unconstrained",
@@ -11,64 +69,7 @@ class MLP_Ensembler(nn.Module):
                  num_epochs=10_000, learning_rate=3e-3, batch_size=128,
                  lambda_1=1e-2, lambda_2=1e-2, loss_criterion=nn.MSELoss,
                  optimizer=optim.Adam):
-        """
-        MLP Ensembler: given `predictions` of base regressors, trained to find
-        a mapping for a good set of weights to combine them. Various
-        constraints can be imposed on the blending vector.
-        
-        Parameters
-        ----------
-        num_features : int
-            Number of features the model will be trained with.
-        
-        predictions : list of pd.Series or list of np.ndarray
-            Base regressors' predictions for the training data.
-        
-        constraint : str, default="unconstrained"
-            One of "unconstrained", "affine", "convex". If "unconstrained",
-            last layer of the network is activated with identity. If "affine",
-            still identity; but the weight vector is divided by its sum so it
-            sums to 1 prior to blending. If "convex", softmax activation is
-            used, i.e., weights sum up to 1 *and* they are nonnegative.
-        
-        hidden_layer_sizes : tuple of int, default=(64, 16)
-            Determines both the number of hidden layers and the number of units
-            per layer. Excludes the input and output layers.
-        
-        hidden_activations : torch.nn.<ACT> or list of torch.nn.<ACT>,
-                             default=torch.nn.ReLU
-            Nonlinearities used in the hidden layers. Should be given
-            uninitialized. If a list, length must match that of
-            `hidden_layer_sizes`; otherwise, repeated for each layer.
-        
-        num_epochs : int, default=10_000
-            Number of epochs to train.
-        
-        learning_rate : float, default=3e-3
-            Passed to `optimizer`.
-        
-        batch_size : int, default=128
-            Number of samples per batch.
-        
-        lambda_1 : float, default=1e-2
-            L1 regularization parameter.
-            
-        lambda_2 : float, default=1e-2
-            L2 regularization parameter.
-        
-        loss_criterion : torch.nn.<CRI>, default=torch.nn.MSELoss
-            Loss function. Should be uninitialized.
-        
-        optimizer : torch.optim.<OPT>, default=torch.optim.Adam
-            Optimizer.
-        
-        Notes
-        -----
-        - Number of inputs are determined from `num_features`
-        - Number of outputs are determined from `len(predictions)`
-        - Network's output are weights and `predictions` are weighted with 
-        these and then fed to the `loss_criterion` agains the ground truths.
-        """
+
         super().__init__()
         
         self.constraint = constraint
