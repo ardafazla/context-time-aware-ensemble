@@ -8,7 +8,6 @@ import lightgbm as lgb
 from scipy.special import softmax
 
 
-
 """
 
 LightGBM Ensembler: given `predictions` of base regressors, trained to find
