@@ -1,5 +1,6 @@
 # context-time-aware-ensemble
-Source code for our paper Time-Aware and Context-Sensitive Ensemble Learning for Sequential Data, submitted to the journal IEEE Transactions on Artificial Intelligence.
+Source code for our paper Time-Aware and Context-Sensitive Ensemble Learning for Sequential Data, published by the journal IEEE Transactions on Artificial Intelligence.
+[PAPER URL](https://doi.org/10.1109/TAI.2023.3319308)
 
 ### Sample Usage
 (Additional comments and instructions can be found in the corresponding model code)
