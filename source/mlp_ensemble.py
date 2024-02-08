@@ -157,7 +157,7 @@ class MLP_Ensembler(nn.Module):
             l1_reg = torch.tensor(0., requires_grad=True)
             for name, param in self.named_parameters():
                 if "weight" in name:
-                    l1_reTrueg = l1_reg + torch.norm(param, p=1)
+                    l1_reg = l1_reg + torch.norm(param, p=1)
             # return regularized loss (L2 is applied with optimizer)
             return loss + self.lambda_1 * l1_reg
         else:
